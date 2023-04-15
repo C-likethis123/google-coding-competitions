@@ -19,17 +19,37 @@ from pprint import pprint
 # ------------------------
 # Be creative here
 # ------------------------
+'''
+A collision: pairs of different words whose encoding is the same.
+
+I will be given a list of N words, and a mapping to map all N words.
+'''
 
 def readcase(f):
-    lines = []
-    for i in range(3):
-        lines.append(readline(f))
-    return lines
+    mapping = readline(f).split(" ")
+    n = readint(f)
+    words = []
+    for i in range(n):
+        words.append(readline(f))
+    return mapping, words
 
 
 def solve(c):
-    one, two, three = c
-    return one
+    mapping, words = c
+    '''
+    map each letter to a mapping
+    I can map a letter to a digit via ascii(letter) - ascii('a')
+    '''
+    mapped_letters = []
+    for word in words:
+        encoding = []
+        for letter in word:
+            idx = ord(letter) - ord('A')
+            encoding.append(mapping[idx])
+        mapped_letters.append(''.join(encoding))
+    # more concise:
+    # mapped_letters = [strjoin(word, glue="", conv=lambda x: mapping[ord(x) - ord('A')]) for word in words]
+    return 'YES' if has_duplicates(mapped_letters) else 'NO'
 
 
 # ------------------------
@@ -61,6 +81,9 @@ def main():
 # ------------------------
 # Utilities
 # ------------------------
+
+def has_duplicates(lst):
+    return len(lst) != len(set(lst))
 
 def bsearch(a, x):
     '''
